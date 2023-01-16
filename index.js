@@ -1,13 +1,111 @@
 // TODO: Include packages needed for this application
+const inquirer = require('inquirer');
+const fs = require('fs');
+
+const renderLicenseBadge = require('./utils/generateMarkdown')
 
 // TODO: Create an array of questions for user input
-const questions = [];
+    inquirer.prompt([
+    {
+        type: 'input',
+        message: 'Describe your project',
+        name: 'description',
+        validate: (value) => { if (value){return true} else {'please describe your project'}},
+    },
+    {
+        type: 'input',
+        message: 'Table of Contents',
+        name: 'contents',
+        validate: (value) => { if (value){return true} else {'please insert your table of contents'}},
+    },
+    {
+        type: 'input',
+        message: 'Add Installation',
+        name: 'installation',
+        validate: (value) => { if (value){return true} else {'please add installation'}},
+    },
+    {
+        type: 'input',
+        message: 'Add usage',
+        name: 'usage',
+        validate: (value) => { if (value){return true} else {'please add usage'}},
+    },
+    {
+        type: 'list',
+        message: 'Please pick a License',
+        name: 'license',
+        choices: ['apache', 'mit', 'boost', 'gnuGpl'],
+    },
+    {
+        type: 'input',
+        message: 'Add contributions',
+        name: 'contributing',
+        validate: (value) => { if (value){return true} else {'please add contributing'}},
+    },
+    {
+        type: 'input',
+        message: 'Add tests',
+        name: 'test',
+        validate: (value) => { if (value){return true} else {'please add test'}},
+    },
+    {
+        type: 'input',
+        message: 'What is your github username',
+        name: 'questions',
+        validate: (value) => { if (value){return true} else {'please add github username.'}},
+    }
+])
+.then(({
+    description,
+    contents,
+    installation,
+    usage,
+    license,
+    contributing,
+    test,
+    questions
+    
+})=>{
+  
+const template =`# ${description}
+    ${renderLicenseBadge(license)}
+    ## description 
+    ${description}
+    ### contents
+    ${contents}
+    #### installation
+    ${installation}
+    ##### usage
+    ${usage}
+    ###### license
+    this application is covered by ${license}
+    ####### contributing
+    ${contributing}
+    ######## test
+    ${test}
+    ######### questions
+    ${questions}`;
+
+    createNewFile(description,template);
+    
+}
+);
+
 
 // TODO: Create a function to write README file
-function writeToFile(fileName, data) {}
+function createNewFile(fileName, data){
+   
+    fs.writeFile(`./${fileName.toLowerCase().split(' ').join('')}.md`, data,(err)=>{
+        if(err){
+            console.log(err);
+        }
+        console.log('the file has been created');
+})
+}
 
-// TODO: Create a function to initialize app
-function init() {}
 
-// Function call to initialize app
-init();
+// // TODO: Create a function to initialize app
+// function init() {}
+
+// // Function call to initialize app
+// init();
