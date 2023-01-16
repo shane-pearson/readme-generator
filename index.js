@@ -50,9 +50,15 @@ const renderLicenseBadge = require('./utils/generateMarkdown')
     },
     {
         type: 'input',
-        message: 'What is your github username',
+        message: 'Any questions?',
         name: 'questions',
-        validate: (value) => { if (value){return true} else {'please add github username.'}},
+        validate: (value) => { if (value){return true} else {'please add a question.'}},
+    },
+    {
+        type: 'input',
+        message: 'Whats your git hub profile?',
+        name: 'git',
+        validate: (value) => { if (value){return true} else {'please add your github.'}},
     }
 ])
 .then(({
@@ -63,36 +69,43 @@ const renderLicenseBadge = require('./utils/generateMarkdown')
     license,
     contributing,
     test,
-    questions
+    questions,
+    git
     
 })=>{
   
-const template =`# ${description}
-    ${renderLicenseBadge(license)}
-    ## description 
+const markDown =`# description  
     ${description}
-    ### contents
+    ${renderLicenseBadge(license)}
+    ## Table of Contents:
+    ### * [description](#description)
+    ### * [installation](#installation)
+    ### * [usage](#usage)
+    ### * [license](#license)
+    ### * [contributing](#contributing)
+    ### * [test](#test)
+    ### * [questions](#questions)
     ${contents}
-    #### installation
+    ### installation
     ${installation}
-    ##### usage
+    #### usage
     ${usage}
-    ###### license
+    ##### license
     this application is covered by ${license}
-    ####### contributing
+    ###### contributing
     ${contributing}
-    ######## test
+    ####### test
     ${test}
-    ######### questions
-    ${questions}`;
+    ######## questions 
+    ${questions}
+    * Github:${git}`;
 
-    createNewFile(description,template);
+    createNewFile(description,markDown);
     
 }
 );
 
 
-// TODO: Create a function to write README file
 function createNewFile(fileName, data){
    
     fs.writeFile(`./${fileName.toLowerCase().split(' ').join('')}.md`, data,(err)=>{
@@ -102,10 +115,3 @@ function createNewFile(fileName, data){
         console.log('the file has been created');
 })
 }
-
-
-// // TODO: Create a function to initialize app
-// function init() {}
-
-// // Function call to initialize app
-// init();

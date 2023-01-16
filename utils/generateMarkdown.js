@@ -20,8 +20,7 @@ function renderLicenseBadge(license) {
     return gnuGpl;
   } 
 
-}
-
+} 
 
 module.exports = renderLicenseBadge;
 
